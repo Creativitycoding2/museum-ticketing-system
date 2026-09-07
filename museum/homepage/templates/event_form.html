@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Event</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-stone-100 min-h-screen">
+
+<header class="bg-stone-900 text-white px-8 py-5">
+
+    <h1 class="text-3xl font-semibold">
+    {% if editing %}
+        Edit Event
+    {% else %}
+        Add Event
+    {% endif %}
+</h1>
+
+    <p class="text-stone-400 mt-1">
+        Create a new museum event
+    </p>
+
+</header>
+
+
+<main class="max-w-3xl mx-auto px-6 py-10">
+
+    <div class="bg-white rounded-xl shadow-sm p-8">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    Please correct the errors below.
+                </div>
+            {% endif %}
+
+
+            <div class="space-y-6">
+
+                <!-- Title -->
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Event Title
+                    </label>
+
+                    {{ form.title }}
+
+                    {{ form.title.errors }}
+                </div>
+
+
+                <!-- Event Type -->
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Event Type
+                    </label>
+
+                    {{ form.event_type }}
+
+                    {{ form.event_type.errors }}
+                </div>
+
+
+                <!-- Description -->
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    {{ form.description.errors }}
+                </div>
+
+
+                <!-- Image -->
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Image URL
+                    </label>
+
+                    {{ form.image }}
+                </div>
+
+
+                <!-- Date + Time -->
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+
+                        <label class="block text-sm font-medium mb-2">
+                            Date
+                        </label>
+
+                        {{ form.date }}
+
+                        {{ form.date.errors }}
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="block text-sm font-medium mb-2">
+                            Time
+                        </label>
+
+                        {{ form.time }}
+
+                        {{ form.time.errors }}
+
+                    </div>
+
+                </div>
+
+
+                <!-- Location -->
+
+                <div>
+
+                    <label class="block text-sm font-medium mb-2">
+                        Location
+                    </label>
+
+                    {{ form.location }}
+
+                    {{ form.location.errors }}
+
+                </div>
+
+
+                <!-- Capacity -->
+
+                <div>
+
+                    <label class="block text-sm font-medium mb-2">
+                        Capacity
+                    </label>
+
+                    {{ form.capacity }}
+
+                    {{ form.capacity.errors }}
+
+                </div>
+
+
+                <!-- Active -->
+
+                <div class="flex items-center gap-3">
+
+                    {{ form.is_active }}
+
+                    <label>
+                        Active
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="flex justify-between mt-8">
+
+                <a
+                    href="{% url 'manage_events' %}"
+                    class="px-5 py-3 border border-stone-300 rounded-lg"
+                >
+                    Cancel
+                </a>
+
+                <button type="submit"
+        class="bg-stone-900 text-white px-6 py-3 rounded-lg hover:bg-stone-800 transition">
+    {% if editing %}
+        Save Changes
+    {% else %}
+        Create Event
+    {% endif %}
+</button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,463 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Museum</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+
+<body class="bg-stone-100 text-stone-900">
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="bg-stone-900 text-white">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="h-20 flex items-center justify-between">
+
+            <div>
+
+                <h1 class="font-semibold text-lg">
+                    Museum Admin
+                </h1>
+
+                <p class="text-xs text-stone-400">
+                    Management Dashboard
+                </p>
+
+            </div>
+
+
+            <div class="flex items-center gap-4">
+
+                <a href="{% url 'home' %}"
+                   class="text-sm text-stone-300
+                          hover:text-white">
+
+                    View Website
+
+                </a>
+
+
+                <a href="{% url 'logout' %}"
+                   class="text-sm text-stone-300
+                          hover:text-white">
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="max-w-7xl mx-auto px-6 py-10">
+
+
+    <!-- Header -->
+
+    <div class="mb-10">
+
+        <p class="text-sm uppercase tracking-widest
+                  text-stone-500">
+
+            Dashboard
+
+        </p>
+
+        <h2 class="text-3xl font-semibold mt-2">
+
+            Museum Overview
+
+        </h2>
+
+        <p class="text-stone-500 mt-2">
+
+            Manage exhibitions and events.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- ================= ANALYTICS ================= -->
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+
+
+        <!-- Exhibitions -->
+
+        <div class="bg-white border border-stone-200
+                    rounded-xl p-6">
+
+            <p class="text-sm text-stone-500">
+
+                Total Exhibitions
+
+            </p>
+
+            <p class="text-3xl font-semibold mt-2">
+
+                {{ total_exhibitions }}
+
+            </p>
+
+        </div>
+
+
+
+        <!-- Active -->
+
+        <div class="bg-white border border-stone-200
+                    rounded-xl p-6">
+
+            <p class="text-sm text-stone-500">
+
+                Active Exhibitions
+
+            </p>
+
+            <p class="text-3xl font-semibold mt-2">
+
+                {{ active_exhibitions }}
+
+            </p>
+
+        </div>
+
+
+
+        <!-- Events -->
+
+        <div class="bg-white border border-stone-200
+                    rounded-xl p-6">
+
+            <p class="text-sm text-stone-500">
+
+                Total Events
+
+            </p>
+
+            <p class="text-3xl font-semibold mt-2">
+
+                {{ total_events }}
+
+            </p>
+
+        </div>
+
+
+
+        <!-- Upcoming -->
+
+        <div class="bg-white border border-stone-200
+                    rounded-xl p-6">
+
+            <p class="text-sm text-stone-500">
+
+                Events
+
+            </p>
+
+            <p class="text-3xl font-semibold mt-2">
+
+                {{ upcoming_events }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= QUICK ACTIONS ================= -->
+
+
+<section class="mb-10">
+
+    <h3 class="text-xl font-semibold mb-5">
+        Quick Actions
+    </h3>
+
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+
+        <!-- Add Exhibition -->
+
+        <a href="{% url 'add_exhibition' %}"
+           class="bg-stone-900 text-white
+                  rounded-xl p-6
+                  hover:bg-stone-800 transition">
+
+            <p class="text-lg font-semibold">
+                + Add Exhibition
+            </p>
+
+            <p class="text-sm text-stone-300 mt-2">
+                Create a new museum exhibition.
+            </p>
+
+        </a>
+
+
+        <!-- Add Event -->
+
+        <a href="{% url 'add_event' %}"
+           class="bg-white border border-stone-200
+                  rounded-xl p-6
+                  hover:shadow-md transition">
+
+            <p class="text-lg font-semibold">
+                + Add Event
+            </p>
+
+            <p class="text-sm text-stone-500 mt-2">
+                Create a new museum event.
+            </p>
+
+        </a>
+
+
+        <!-- Manage Exhibitions -->
+
+        <a href="{% url 'manage_exhibitions' %}"
+           class="bg-white border border-stone-200
+                  rounded-xl p-6
+                  hover:shadow-md transition">
+
+            <p class="text-lg font-semibold">
+                Manage Exhibitions
+            </p>
+
+            <p class="text-sm text-stone-500 mt-2">
+                View, deactivate and manage exhibitions.
+            </p>
+
+        </a>
+
+
+        <!-- Manage Events -->
+
+        <a href="{% url 'manage_events' %}"
+           class="bg-white border border-stone-200
+                  rounded-xl p-6
+                  hover:shadow-md transition">
+
+            <p class="text-lg font-semibold">
+                Manage Events
+            </p>
+
+            <p class="text-sm text-stone-500 mt-2">
+                View, deactivate and manage events.
+            </p>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+
+    <!-- ================= RECENT EXHIBITIONS ================= -->
+
+    <section class="mb-10">
+
+        <div class="flex items-center justify-between mb-5">
+
+            <h3 class="text-xl font-semibold">
+
+                Recent Exhibitions
+
+            </h3>
+
+            <a href="{% url 'exhibitions' %}"
+               class="text-sm text-stone-500
+                      hover:text-stone-900">
+
+                View Exhibitions →
+
+            </a>
+
+        </div>
+
+
+        <div class="bg-white border border-stone-200
+                    rounded-xl overflow-hidden">
+
+
+            {% for exhibition in recent_exhibitions %}
+
+                <div class="p-5 border-b border-stone-200
+                            last:border-b-0
+                            flex items-center
+                            justify-between">
+
+                    <div>
+
+                        <p class="font-medium">
+
+                            {{ exhibition.title }}
+
+                        </p>
+
+                        <p class="text-sm text-stone-500 mt-1">
+
+                            {{ exhibition.category }}
+
+                        </p>
+
+                    </div>
+
+
+                    <span class="text-xs text-stone-400">
+
+                        {{ exhibition.created_at|date:"d M Y" }}
+
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <div class="p-6 text-sm text-stone-500">
+
+                    No exhibitions have been added yet.
+
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= RECENT EVENTS ================= -->
+
+    <section>
+
+        <div class="flex items-center justify-between mb-5">
+
+            <h3 class="text-xl font-semibold">
+
+                Recent Events
+
+            </h3>
+
+            <a href="{% url 'events' %}"
+               class="text-sm text-stone-500
+                      hover:text-stone-900">
+
+                View Events →
+
+            </a>
+
+        </div>
+
+
+        <div class="bg-white border border-stone-200
+                    rounded-xl overflow-hidden">
+
+
+            {% for event in recent_events %}
+
+                <div class="p-5 border-b border-stone-200
+                            last:border-b-0
+                            flex items-center
+                            justify-between">
+
+                    <div>
+
+                        <p class="font-medium">
+
+                            {{ event.title }}
+
+                        </p>
+
+                        <p class="text-sm text-stone-500 mt-1">
+
+                            {{ event.date }}
+                            •
+                            {{ event.time }}
+
+                        </p>
+
+                    </div>
+
+
+                    <span class="text-xs text-stone-400">
+
+                        {{ event.location }}
+
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <div class="p-6 text-sm text-stone-500">
+
+                    No events have been added yet.
+
+                </div>
+
+            {% endfor %}
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="border-t border-stone-200 mt-10">
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+
+        <p class="text-sm text-stone-400">
+
+            Museum Administration
+
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

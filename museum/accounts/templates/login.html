@@ -1,0 +1,757 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Museum Tickets | Sign In</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+
+            background: #171512;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Main page background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -10px;
+
+            background-image:
+                linear-gradient(
+                    rgba(20, 17, 13, 0.35),
+                    rgba(20, 17, 13, 0.35)
+                ),
+                url("{% static 'images/museum-background.jpg' %}");
+
+            background-size: cover;
+            background-position: center;
+
+            filter: blur(3px);
+
+            transform: scale(1.03);
+
+            z-index: -1;
+        }
+        .container {
+            width: 1000px;
+            max-width: 95%;
+            min-height: 600px;
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* =========================================
+           LEFT MUSEUM IMAGE
+        ========================================= */
+
+        .image-section {
+            position: relative;
+            width: 52%;
+            overflow: hidden;
+
+            background-image:
+                linear-gradient(
+                    rgba(20, 17, 13, 0.25),
+                    rgba(20, 17, 13, 0.45)
+                ),
+                url("{% static 'images/museum-bg.jpg' %}");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Creates the blurred background */
+        .image-section::before {
+            content: "";
+            position: absolute;
+            inset: -15px;
+
+            background-image:
+                linear-gradient(
+                    rgba(20, 17, 13, 0.15),
+                    rgba(20, 17, 13, 0.35)
+                ),
+                url("{% static 'images/museum-bg.jpg' %}");
+
+            background-size: cover;
+            background-position: center;
+
+            filter: blur(2px);
+            transform: scale(1.05);
+        }
+
+        /* Dark overlay */
+        .image-section::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(15, 13, 10, 0.75),
+                rgba(15, 13, 10, 0.05)
+            );
+        }
+
+        /* Museum text on image */
+        .museum-info {
+            position: absolute;
+            z-index: 3;
+            left: 45px;
+            bottom: 45px;
+            color: white;
+            max-width: 380px;
+        }
+
+        .museum-info .small-title {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #d5b477;
+            margin-bottom: 12px;
+        }
+
+        .museum-info h1 {
+            font-size: 38px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .museum-info p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+
+        /* =========================================
+           RIGHT FORM
+        ========================================= */
+
+        .form-section {
+            width: 48%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px;
+            background: #fff;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 360px;
+        }
+
+
+        /* =========================================
+           ARTWORK
+        ========================================= */
+
+        .artwork {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 22px;
+
+            border: 3px solid #f0e6d3;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .artwork img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+
+        /* =========================================
+           HEADINGS
+        ========================================= */
+
+        .form-container h2 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 8px;
+            color: #25221e;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #858079;
+            margin-bottom: 30px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================================
+           INPUTS
+        ========================================= */
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            color: #393631;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd8d0;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            background: #faf9f7;
+            color: #25221e;
+            transition: 0.2s;
+        }
+
+        .input-group input::placeholder {
+            color: #aaa49b;
+        }
+
+        .input-group input:focus {
+            border-color: #b08d57;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.12);
+        }
+
+
+        /* =========================================
+           BUTTON
+        ========================================= */
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+
+            background: #28241f;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #b08d57;
+        }
+
+
+        /* =========================================
+           SWITCH LOGIN / SIGNUP
+        ========================================= */
+
+        .switch {
+            text-align: center;
+            margin-top: 24px;
+            color: #88827a;
+            font-size: 14px;
+        }
+
+        .switch button {
+            border: none;
+            background: none;
+            color: #9a753f;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .switch button:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================================
+           ERROR
+        ========================================= */
+
+        .login-error {
+            margin-bottom: 18px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .signup-error {
+            margin-top: 15px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 14px;
+            text-align: center;
+        }
+
+
+        /* =========================================
+           SIGNUP HIDDEN
+        ========================================= */
+
+        #signupForm {
+            display: none;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 15px;
+                background: #171512;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 450px;
+                min-height: 680px;
+
+                display: block;
+                position: relative;
+
+                background: transparent;
+                box-shadow: none;
+
+                overflow: hidden;
+                border-radius: 18px;
+            }
+
+            /* Full background image */
+            .image-section {
+                position: absolute;
+                inset: 0;
+
+                width: 100%;
+                height: 100%;
+
+                border-radius: 18px;
+            }
+
+            /* Hide desktop museum text on mobile */
+            .museum-info {
+                display: none;
+            }
+
+            /* Form becomes glass card */
+            .form-section {
+                position: relative;
+                z-index: 5;
+
+                width: 100%;
+                min-height: 680px;
+
+                padding: 35px 25px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                background: rgba(255, 255, 255, 0.82);
+
+                border-radius: 18px;
+
+                backdrop-filter: blur(7px);
+                -webkit-backdrop-filter: blur(7px);
+            }
+
+            .form-container {
+                max-width: 100%;
+            }
+        }
+
+
+        /* =========================================
+           SMALL PHONES
+        ========================================= */
+
+        @media (max-width: 400px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                min-height: 700px;
+            }
+
+            .form-section {
+                min-height: 700px;
+                padding: 30px 20px;
+            }
+
+            .artwork {
+                width: 75px;
+                height: 75px;
+                margin-bottom: 18px;
+            }
+
+            .form-container h2 {
+                font-size: 26px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <!-- =====================================
+             MUSEUM BACKGROUND
+        ====================================== -->
+
+        <div class="image-section">
+
+            <div class="museum-info">
+
+                <div class="small-title">
+                    Museum Ticketing
+                </div>
+
+                <h1>
+                    Discover.<br>
+                    Explore.<br>
+                    Remember.
+                </h1>
+
+                <p>
+                    Your journey through history, art and culture
+                    starts here.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             FORMS
+        ====================================== -->
+
+        <div class="form-section">
+
+            <div class="form-container">
+
+
+                <!-- =================================
+                     LOGIN
+                ================================== -->
+
+                <form id="loginForm" method="POST">
+
+                    {% csrf_token %}
+
+                    <!-- Museum artwork -->
+                    <div class="artwork">
+                        <img
+                            src="{% static 'images/museum-art.jpg' %}"
+                            alt="Museum artwork"
+                        >
+                    </div>
+
+
+                    <h2>
+                        Welcome Back
+                    </h2>
+
+                    <p class="subtitle">
+                        Sign in to manage your museum tickets.
+                    </p>
+
+
+                    {% if error %}
+
+                        <div class="login-error">
+                            {{ error }}
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- Username -->
+
+                    <div class="input-group">
+
+                        <label for="loginUsername">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="loginUsername"
+                            name="username"
+                            placeholder="Enter your username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="input-group">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        Sign In
+                    </button>
+
+
+                    <div class="switch">
+
+                        Don't have an account?
+
+                        <button
+                            type="button"
+                            onclick="showSignup()"
+                        >
+                            Sign Up
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- =================================
+                     SIGN UP
+                ================================== -->
+
+                <form
+                    id="signupForm"
+                    method="POST"
+                    action="{% url 'signup' %}"
+                >
+
+                    {% csrf_token %}
+
+
+                    <!-- Museum artwork -->
+
+                    <div class="artwork">
+                        <img
+                            src="{% static 'images/museum-art.jpg' %}"
+                            alt="Museum artwork"
+                        >
+                    </div>
+
+
+                    <h2>
+                        Create Account
+                    </h2>
+
+                    <p class="subtitle">
+                        Create your account to book and manage
+                        museum tickets.
+                    </p>
+
+
+                    <!-- Username -->
+
+                    <div class="input-group">
+
+                        <label for="signupUsername">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="signupUsername"
+                            name="username"
+                            placeholder="Username"
+                            value="{{ signup_username|default:'' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="input-group">
+
+                        <label for="signupEmail">
+                            Email <span>(optional)</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="signupEmail"
+                            name="email"
+                            placeholder="you@example.com"
+                            value="{{ signup_email|default:'' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="input-group">
+
+                        <label for="signupPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="signupPassword"
+                            name="password"
+                            placeholder="Create a password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        Create Account
+                    </button>
+
+
+                    {% if signup_error %}
+
+                        <div
+                            id="signup-error"
+                            class="signup-error"
+                        >
+                            {{ signup_error }}
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="switch">
+
+                        Already have an account?
+
+                        <button
+                            type="button"
+                            onclick="showLogin()"
+                        >
+                            Sign In
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const signupForm =
+            document.getElementById("signupForm");
+
+
+        function showSignup() {
+
+            loginForm.style.display = "none";
+
+            signupForm.style.display = "block";
+        }
+
+
+        function showLogin() {
+
+            signupForm.style.display = "none";
+
+            loginForm.style.display = "block";
+
+            const error =
+                document.getElementById("signup-error");
+
+            if (error) {
+
+                error.remove();
+
+            }
+        }
+
+
+        {% if show_signup %}
+
+            showSignup();
+
+        {% endif %}
+
+    </script>
+
+</body>
+</html>

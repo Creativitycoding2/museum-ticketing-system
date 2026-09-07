@@ -1,0 +1,259 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exhibitions | Museum</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-50 text-stone-900">
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="sticky top-0 z-50 bg-stone-50/95 backdrop-blur border-b border-stone-200">
+
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="h-20 flex items-center justify-between">
+
+            <!-- Logo -->
+            <a href="{% url 'home' %}" class="flex items-center gap-3">
+
+                <div class="w-10 h-10 rounded-lg bg-stone-900 text-white
+                            flex items-center justify-center text-xl">
+                    M
+                </div>
+
+                <div>
+                    <h1 class="font-semibold text-lg leading-none">
+                        Museum
+                    </h1>
+
+                    <p class="text-xs text-stone-500 mt-1">
+                        Discover. Explore. Experience.
+                    </p>
+                </div>
+
+            </a>
+
+
+            <!-- Navigation -->
+            <nav class="hidden md:flex items-center gap-8 text-sm">
+
+                <a href="{% url 'home' %}"
+                   class="text-stone-500 hover:text-stone-900 transition">
+                    Home
+                </a>
+
+                <a href="{% url 'exhibitions' %}"
+                   class="font-medium text-stone-900">
+                    Exhibitions
+                </a>
+
+                <a href="{% url 'events' %}"
+                   class="text-stone-500 hover:text-stone-900 transition">
+                    Events
+                </a>
+
+                <a href="#"
+                   class="text-stone-500 hover:text-stone-900 transition">
+                    My Tickets
+                </a>
+
+            </nav>
+
+
+            <!-- Right side -->
+            <div class="flex items-center gap-4">
+
+                <button class="hidden sm:block text-sm text-stone-600
+                               hover:text-stone-900">
+                    EN
+                </button>
+
+                <a href="{% url 'logout' %}"
+                   aria-label="Logout"
+                   title="Logout"
+                   class="inline-flex items-center justify-center
+                          w-10 h-10
+                          text-gray-600 bg-white
+                          border border-gray-300
+                          rounded-full
+                          hover:bg-gray-100 hover:text-red-600
+                          transition">
+
+                    <svg
+                        class="w-5 h-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2">
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 9V5.25
+                               A2.25 2.25 0 0 0 13.5 3
+                               h-6A2.25 2.25 0 0 0 5.25 5.25v13.5
+                               A2.25 2.25 0 0 0 7.5 21h6
+                               a2.25 2.25 0 0 0 2.25-2.25V15
+                               M18 12H9
+                               m0 0 3-3
+                               m-3 3 3 3" />
+
+                    </svg>
+
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</header>
+
+
+<!-- ================= PAGE HEADER ================= -->
+
+<section class="max-w-7xl mx-auto px-6 py-16">
+
+    <p class="text-sm uppercase tracking-widest text-stone-500">
+        Museum
+    </p>
+
+    <h2 class="text-4xl font-semibold mt-3">
+        Exhibitions
+    </h2>
+
+    <p class="text-stone-500 mt-4 max-w-2xl">
+        Explore our current and upcoming exhibitions.
+    </p>
+
+</section>
+
+
+<!-- ================= EXHIBITIONS ================= -->
+
+<section class="max-w-7xl mx-auto px-6 pb-20">
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    {% for exhibition in exhibitions %}
+
+    <article class="bg-white border border-stone-200 rounded-xl overflow-hidden">
+
+        <div class="h-56">
+
+            {% if exhibition.image %}
+
+                <img
+                    src="{{ exhibition.image }}"
+                    alt="{{ exhibition.title }}"
+                    class="w-full h-full object-cover">
+
+            {% else %}
+
+                <div class="w-full h-full bg-stone-200
+                            flex items-center justify-center
+                            text-stone-500">
+                    No image available
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="p-6">
+
+            <p class="text-xs uppercase tracking-wider text-stone-500">
+                {{ exhibition.category }}
+            </p>
+
+            <h3 class="text-xl font-semibold mt-2">
+                {{ exhibition.title }}
+            </h3>
+
+            <p class="text-sm text-stone-500 mt-3">
+                {{ exhibition.description }}
+            </p>
+
+
+            <p class="text-sm text-stone-600 mt-4">
+
+                {% if exhibition.is_permanent %}
+
+                    Permanent Exhibition
+
+                {% else %}
+
+                    {{ exhibition.start_date|date:"j F Y" }}
+                    –
+                    {{ exhibition.end_date|date:"j F Y" }}
+
+                {% endif %}
+
+            </p>
+
+
+            <button class="mt-5 text-sm font-medium hover:underline">
+                View exhibition →
+            </button>
+
+        </div>
+
+    </article>
+
+    {% empty %}
+
+        <p class="text-stone-500">
+            No exhibitions are currently available.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="border-t border-stone-200">
+
+    <div class="max-w-7xl mx-auto px-6 py-10
+                flex flex-col md:flex-row
+                md:items-center md:justify-between gap-4">
+
+        <div>
+            <p class="font-semibold">
+                Museum
+            </p>
+
+            <p class="text-sm text-stone-500 mt-1">
+                Discover. Explore. Experience.
+            </p>
+        </div>
+
+        <p class="text-sm text-stone-400">
+            © 2026 Museum. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
+

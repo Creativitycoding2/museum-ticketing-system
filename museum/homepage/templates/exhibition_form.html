@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Exhibition</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-stone-100 min-h-screen">
+
+<header class="bg-stone-900 text-white px-8 py-5">
+    <h1 class="text-3xl font-semibold">
+    {% if editing %}
+        Edit Exhibition
+    {% else %}
+        Add Exhibition
+    {% endif %}
+</h1>
+</header>
+
+
+<main class="max-w-3xl mx-auto px-6 py-10">
+
+    <div class="bg-white rounded-xl shadow-sm p-8">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    Please correct the errors below.
+                </div>
+            {% endif %}
+
+
+            <div class="space-y-6">
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Title
+                    </label>
+
+                    {{ form.title }}
+
+                    {{ form.title.errors }}
+                </div>
+
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Category
+                    </label>
+
+                    {{ form.category }}
+
+                    {{ form.category.errors }}
+                </div>
+
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    {{ form.description.errors }}
+                </div>
+
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Image URL
+                    </label>
+
+                    {{ form.image }}
+                </div>
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">
+                            Start Date
+                        </label>
+
+                        {{ form.start_date }}
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2">
+                            End Date
+                        </label>
+
+                        {{ form.end_date }}
+                    </div>
+
+                </div>
+
+
+                <div class="flex items-center gap-3">
+                    {{ form.is_permanent }}
+
+                    <label>
+                        Permanent Exhibition
+                    </label>
+                </div>
+
+
+                <div class="flex items-center gap-3">
+                    {{ form.is_active }}
+
+                    <label>
+                        Active
+                    </label>
+                </div>
+
+            </div>
+
+
+            <div class="flex justify-between mt-8">
+
+                <a
+                    href="{% url 'admin_dashboard' %}"
+                    class="px-5 py-3 border border-stone-300 rounded-lg"
+                >
+                    Cancel
+                </a>
+
+                <button type="submit"
+        class="bg-stone-900 text-white px-6 py-3 rounded-lg hover:bg-stone-800 transition">
+    {% if editing %}
+        Save Changes
+    {% else %}
+        Create exhibition
+    {% endif %}
+</button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>
