@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ event.title }} | Museum</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-stone-50 text-stone-900">
+
+<nav class="bg-white border-b border-stone-200">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+        <a href="{% url 'home' %}"
+           class="text-xl font-semibold">
+            Museum
+        </a>
+
+        <div class="flex gap-6 text-sm">
+            <a href="{% url 'exhibitions' %}"
+               class="hover:underline">
+                Exhibitions
+            </a>
+
+            <a href="{% url 'events' %}"
+               class="hover:underline">
+                Events
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+
+<main class="max-w-5xl mx-auto px-6 py-16">
+
+    <a href="{% url 'events' %}"
+       class="text-sm text-stone-500 hover:underline">
+        ← Back to events
+    </a>
+
+
+    <div class="mt-8 bg-white border border-stone-200
+                rounded-2xl overflow-hidden">
+
+        {% if event.image %}
+            <img src="{{ event.image }}?auto=format&fit=crop&w=400&q=320"
+                 alt="{{ event.title }}"
+                 class="w-full h-80 object-cover">
+        {% endif %}
+
+
+        <div class="p-8 md:p-10">
+
+            <span class="text-sm uppercase tracking-wider
+                         text-stone-500">
+                {{ event.event_type }}
+            </span>
+
+            <h1 class="mt-3 text-4xl font-semibold">
+                {{ event.title }}
+            </h1>
+
+            <p class="mt-6 text-stone-600 leading-relaxed">
+                {{ event.description }}
+            </p>
+
+
+            <div class="mt-8 grid sm:grid-cols-2 gap-6
+                        border-t border-stone-200 pt-8">
+
+                <div>
+                    <p class="text-sm text-stone-500">
+                        Date
+                    </p>
+
+                    <p class="mt-1 font-medium">
+                        {{ event.date|date:"d F Y" }}
+                    </p>
+                </div>
+
+
+                <div>
+                    <p class="text-sm text-stone-500">
+                        Time
+                    </p>
+
+                    <p class="mt-1 font-medium">
+                        {{ event.time|time:"g:i A" }}
+                    </p>
+                </div>
+
+
+                <div>
+                    <p class="text-sm text-stone-500">
+                        Location
+                    </p>
+
+                    <p class="mt-1 font-medium">
+                        {{ event.location }}
+                    </p>
+                </div>
+
+
+                {% if event.capacity %}
+                <div>
+                    <p class="text-sm text-stone-500">
+                        Capacity
+                    </p>
+
+                    <p class="mt-1 font-medium">
+                        {{ event.capacity }} people
+                    </p>
+                </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="mt-10">
+
+                <form method="POST"
+                      action="{% url 'book_event' event.id %}"
+                      class="mt-10">
+
+                    {% csrf_token %}
+
+                    <label for="number_of_tickets"
+                           class="block text-sm font-medium text-stone-700">
+                        Number of tickets
+                    </label>
+
+                    <div class="mt-2 flex items-center gap-3">
+
+                        <input
+                            type="number"
+                            id="number_of_tickets"
+                            name="number_of_tickets"
+                            value="1"
+                            min="1"
+                            class="w-24 px-3 py-2 border border-stone-300
+                                   rounded-lg">
+
+                        <button
+                            type="submit"
+                            class="px-6 py-3 bg-stone-900 text-white
+                                   rounded-lg font-medium text-sm
+                                   hover:bg-stone-700 transition">
+                            Book a Visit
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<footer class="border-t border-stone-200 bg-white mt-10">
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+
+        <p class="text-sm text-stone-500">
+            © 2026 Museum. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

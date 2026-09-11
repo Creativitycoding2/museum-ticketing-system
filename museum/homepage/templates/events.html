@@ -65,7 +65,7 @@
                     Events
                 </a>
 
-                <a href="#"
+                <a href="{% url 'my_bookings' %}"
                    class="text-stone-500 hover:text-stone-900 transition">
                     My Tickets
                 </a>
@@ -192,7 +192,9 @@
                        rounded-lg text-sm font-medium
                        hover:bg-stone-800 transition">
 
-                View Details
+                <a href="{% url 'event_detail' event.id %}">
+                    View event →
+                </a>
 
             </button>
 

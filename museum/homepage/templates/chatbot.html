@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Museum Assistant</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <div class="max-w-3xl mx-auto py-10 px-4">
+
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+            <!-- Header -->
+<div class="bg-gray-900 text-white px-6 py-5 flex justify-between items-center">
+
+    <div>
+        <h1 class="text-2xl font-bold">
+            Museum Assistant
+        </h1>
+
+        <p class="text-gray-300 text-sm mt-1">
+            Ask me about exhibitions, events, and bookings.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'home' %}"
+        class="text-sm text-gray-300 hover:text-white transition"
+    >
+        ← Back to Website
+    </a>
+
+</div>
+
+
+            <!-- Messages -->
+            <div
+                id="chat-messages"
+                class="h-[500px] overflow-y-auto p-6 space-y-4"
+            >
+
+                <div class="flex justify-start">
+                    <div class="bg-gray-100 rounded-xl px-4 py-3 max-w-[80%]">
+                        Hello! How can I help you today?
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Input -->
+            <div class="border-t p-4">
+
+                <form id="chat-form" class="flex gap-3">
+
+                    <input
+                        id="message-input"
+                        type="text"
+                        placeholder="Ask something..."
+                        class="flex-1 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="submit"
+                        class="bg-gray-900 text-white px-6 py-3 rounded-xl hover:bg-gray-700"
+                    >
+                        Send
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const chatForm = document.getElementById("chat-form");
+        const messageInput = document.getElementById("message-input");
+        const chatMessages = document.getElementById("chat-messages");
+
+
+        function addMessage(text, sender) {
+
+            const wrapper = document.createElement("div");
+
+            wrapper.className =
+                sender === "user"
+                    ? "flex justify-end"
+                    : "flex justify-start";
+
+
+            const message = document.createElement("div");
+
+            message.className =
+                sender === "user"
+                    ? "bg-gray-900 text-white rounded-xl px-4 py-3 max-w-[80%]"
+                    : "bg-gray-100 rounded-xl px-4 py-3 max-w-[80%]";
+
+
+            message.textContent = text;
+
+            wrapper.appendChild(message);
+            chatMessages.appendChild(wrapper);
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+function addConfirmation(message) {
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex justify-start";
+
+    const container = document.createElement("div");
+    container.className =
+        "bg-white border border-gray-200 shadow-sm rounded-xl px-4 py-4 max-w-[80%]";
+
+    const text = document.createElement("div");
+    text.textContent = message;
+    text.className = "text-gray-800";
+
+    const buttons = document.createElement("div");
+    buttons.className = "flex gap-2 mt-4";
+
+    const confirmButton = document.createElement("button");
+    confirmButton.textContent = "Confirm";
+    confirmButton.className =
+        "bg-gray-900 text-white px-4 py-2 rounded-lg " +
+        "hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed";
+
+    const cancelButton = document.createElement("button");
+    cancelButton.textContent = "Cancel";
+    cancelButton.className =
+        "border border-gray-300 px-4 py-2 rounded-lg " +
+        "hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed";
+
+    buttons.appendChild(confirmButton);
+    buttons.appendChild(cancelButton);
+
+    container.appendChild(text);
+    container.appendChild(buttons);
+
+    wrapper.appendChild(container);
+    chatMessages.appendChild(wrapper);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+    // ================= CONFIRM =================
+
+    confirmButton.addEventListener("click", async function() {
+
+        confirmButton.disabled = true;
+        cancelButton.disabled = true;
+
+        confirmButton.textContent = "Processing...";
+
+        try {
+
+            const response = await fetch(
+                "/chatbot/confirm/",
+                {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken")
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (data.error) {
+
+                addMessage(
+                    "Error: " + data.error,
+                    "assistant"
+                );
+
+                confirmButton.disabled = false;
+                cancelButton.disabled = false;
+                confirmButton.textContent = "Confirm";
+
+                return;
+            }
+
+
+            if (data.success) {
+
+                // Remove the confirmation buttons
+                buttons.remove();
+
+                const result = data.result;
+
+                if (result.booking_id) {
+
+                    addMessage(
+                        `Booking confirmed for "${result.event_title}" with ${result.number_of_tickets} ticket(s).`,
+                        "assistant"
+                    );
+
+                } else if (result.visit_id) {
+
+                    addMessage(
+                        `Museum visit confirmed for ${result.number_of_visitors} visitor(s) on ${result.date} at ${result.time}.`,
+                        "assistant"
+                    );
+
+                } else if (result.status === "cancelled") {
+
+                    addMessage(
+                        "Your booking has been cancelled.",
+                        "assistant"
+                    );
+
+                } else {
+
+                    addMessage(
+                        "Action completed successfully.",
+                        "assistant"
+                    );
+                }
+            }
+
+        } catch (error) {
+
+            addMessage(
+                "Something went wrong while confirming the action.",
+                "assistant"
+            );
+
+            confirmButton.disabled = false;
+            cancelButton.disabled = false;
+            confirmButton.textContent = "Confirm";
+        }
+
+    });
+
+
+    // ================= CANCEL =================
+
+    cancelButton.addEventListener("click", async function() {
+
+        confirmButton.disabled = true;
+        cancelButton.disabled = true;
+
+        cancelButton.textContent = "Cancelling...";
+
+        try {
+
+            const response = await fetch(
+                "/chatbot/cancel/",
+                {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken")
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (data.error) {
+
+                addMessage(
+                    "Error: " + data.error,
+                    "assistant"
+                );
+
+                confirmButton.disabled = false;
+                cancelButton.disabled = false;
+                cancelButton.textContent = "Cancel";
+
+                return;
+            }
+
+            // Remove confirmation buttons
+            buttons.remove();
+
+            addMessage(
+                "Action cancelled.",
+                "assistant"
+            );
+
+        } catch (error) {
+
+            addMessage(
+                "Something went wrong while cancelling.",
+                "assistant"
+            );
+
+            confirmButton.disabled = false;
+            cancelButton.disabled = false;
+            cancelButton.textContent = "Cancel";
+        }
+
+    });
+}
+
+        chatForm.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const message = messageInput.value.trim();
+
+            if (!message) {
+                return;
+            }
+
+
+            addMessage(message, "user");
+
+            messageInput.value = "";
+
+
+            const formData = new FormData();
+
+            formData.append("message", message);
+
+
+            try {
+
+                const response = await fetch(
+                    "/chatbot/",
+                    {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken")
+                        }
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                if (data.error) {
+
+                    addMessage(
+                        "Error: " + data.error,
+                        "assistant"
+                    );
+
+                    return;
+                }
+
+
+                if (data.confirmation_required) {
+
+                        addConfirmation(data.message);
+
+                        return;
+                    }
+
+
+                addMessage(
+                    data.response,
+                    "assistant"
+                );
+
+
+            } catch (error) {
+
+                addMessage(
+                    "Something went wrong. Please try again.",
+                    "assistant"
+                );
+
+            }
+
+        });
+
+
+        function getCookie(name) {
+
+            let cookieValue = null;
+
+            if (document.cookie && document.cookie !== "") {
+
+                const cookies = document.cookie.split(";");
+
+                for (let cookie of cookies) {
+
+                    cookie = cookie.trim();
+
+                    if (cookie.startsWith(name + "=")) {
+
+                        cookieValue = decodeURIComponent(
+                            cookie.substring(name.length + 1)
+                        );
+
+                        break;
+                    }
+                }
+            }
+
+            return cookieValue;
+        }
+
+    </script>
+
+</body>
+</html>

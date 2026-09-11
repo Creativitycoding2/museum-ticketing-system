@@ -24,41 +24,88 @@
 
 <header class="bg-stone-900 text-white">
 
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-        <div class="h-20 flex items-center justify-between">
+        <div class="min-h-20 py-4 flex items-center justify-between gap-4">
 
-            <div>
-
-                <h1 class="font-semibold text-lg">
+            <!-- Brand -->
+            <div class="min-w-0">
+                <h1 class="font-semibold text-base sm:text-lg truncate">
                     Museum Admin
                 </h1>
 
-                <p class="text-xs text-stone-400">
+                <p class="text-xs text-stone-400 truncate">
                     Management Dashboard
                 </p>
-
             </div>
 
 
-            <div class="flex items-center gap-4">
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-4 shrink-0">
 
                 <a href="{% url 'home' %}"
-                   class="text-sm text-stone-300
-                          hover:text-white">
-
+                   class="text-sm text-stone-300 hover:text-white transition">
                     View Website
-
                 </a>
-
 
                 <a href="{% url 'logout' %}"
-                   class="text-sm text-stone-300
-                          hover:text-white">
-
+                   class="text-sm text-stone-300 hover:text-white transition">
                     Logout
-
                 </a>
+
+            </nav>
+
+
+            <!-- Mobile Navigation -->
+            <div class="md:hidden relative shrink-0">
+
+                <details class="relative">
+
+                    <summary
+                        class="list-none cursor-pointer
+                               px-3 py-2
+                               border border-stone-700
+                               rounded-lg
+                               text-sm text-stone-200
+                               hover:bg-stone-800
+                               transition">
+
+                        Menu
+                        <span class="ml-1 text-stone-400">⌄</span>
+
+                    </summary>
+
+
+                    <!-- Dropdown -->
+                    <div
+                        class="absolute right-0 top-full mt-2
+                               w-48
+                               bg-stone-800
+                               border border-stone-700
+                               rounded-xl
+                               shadow-lg
+                               overflow-hidden
+                               z-50">
+
+                        <a href="{% url 'home' %}"
+                           class="block px-4 py-3
+                                  text-sm text-stone-200
+                                  hover:bg-stone-700
+                                  transition">
+                            View Website
+                        </a>
+
+                        <a href="{% url 'logout' %}"
+                           class="block px-4 py-3
+                                  text-sm text-stone-200
+                                  hover:bg-stone-700
+                                  transition">
+                            Logout
+                        </a>
+
+                    </div>
+
+                </details>
 
             </div>
 
@@ -67,6 +114,7 @@
     </div>
 
 </header>
+
 
 
 
@@ -104,7 +152,7 @@
 
     <!-- ================= ANALYTICS ================= -->
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-10">
 
 
         <!-- Exhibitions -->
@@ -187,14 +235,43 @@
 
             </p>
 
+
         </div>
+        <!-- Active Tickets -->
+
+<div class="bg-white border border-stone-200
+            rounded-xl p-6">
+
+    <p class="text-sm text-stone-500">
+        Active Tickets
+    </p>
+
+    <p class="text-3xl font-semibold mt-2">
+        {{ total_active_tickets }}
+    </p>
+
+</div>
+
+
+<!-- Event Bookings -->
+
+<div class="bg-white border border-stone-200
+            rounded-xl p-6">
+
+    <p class="text-sm text-stone-500">
+        Event Bookings
+    </p>
+
+    <p class="text-3xl font-semibold mt-2">
+        {{ total_event_bookings }}
+    </p>
+
+</div>
 
     </div>
 
 
-
-    <!-- ================= QUICK ACTIONS ================= -->
-
+<!-- ================= QUICK ACTIONS ================= -->
 
 <section class="mb-10">
 
@@ -203,7 +280,7 @@
     </h3>
 
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
 
         <!-- Add Exhibition -->
@@ -278,9 +355,46 @@
         </a>
 
 
+        <!-- Manage Bookings -->
+
+        <a href="{% url 'manage_bookings' %}"
+           class="bg-white border border-stone-200
+                  rounded-xl p-6
+                  hover:shadow-md transition">
+
+            <p class="text-lg font-semibold">
+                Manage Bookings
+            </p>
+
+            <p class="text-sm text-stone-500 mt-2">
+                View visitor bookings and ticket statuses.
+            </p>
+
+        </a>
+
+
+        <!-- Ticket Scanner -->
+
+        <a href="{% url 'ticket_scanner' %}"
+           class="bg-white border border-stone-200
+                  rounded-xl p-6
+                  hover:shadow-md transition">
+
+            <p class="text-lg font-semibold">
+                Ticket Scanner
+            </p>
+
+            <p class="text-sm text-stone-500 mt-2">
+                Scan and check in visitor tickets.
+            </p>
+
+        </a>
+
+
     </div>
 
 </section>
+
 
 
 

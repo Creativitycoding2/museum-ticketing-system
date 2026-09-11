@@ -63,7 +63,7 @@
                     Events
                 </a>
 
-                <a href="#"
+                <a href="{% url 'my_bookings' %}"
                    class="text-stone-500 hover:text-stone-900 transition">
                     My Tickets
                 </a>
@@ -79,15 +79,16 @@
                 </button>
 
                 <!-- AI Assistant -->
-                <button class="hidden sm:flex items-center gap-2
-                               px-4 py-2 rounded-lg
-                               bg-stone-900 text-white text-sm
-                               hover:bg-stone-800 transition">
+                <a href="{% url 'chatbot' %}"
+   class="hidden sm:flex items-center gap-2
+          px-4 py-2 rounded-lg
+          bg-stone-900 text-white text-sm
+          hover:bg-stone-800 transition">
 
-                    <span>AI Assistant</span>
-                    <span>→</span>
+    <span>AI Assistant</span>
+    <span>→</span>
 
-                </button>
+</a>
 
                 <!-- Logout -->
                 <a
@@ -182,13 +183,13 @@
                         Explore Exhibits
                     </a>
 
-                    <button
-                        class="px-6 py-3 bg-white/10 backdrop-blur
-                               border border-white/30 text-white
-                               rounded-lg font-medium text-sm
-                               hover:bg-white/20 transition">
-                        Book a Visit
-                    </button>
+                    <a href="{% url 'chatbot' %}"
+   class="px-6 py-3 bg-white/10 backdrop-blur
+          border border-white/30 text-white
+          rounded-lg font-medium text-sm
+          hover:bg-white/20 transition">
+    Book a Visit
+</a>
 
                 </div>
 
@@ -295,10 +296,9 @@
 
                 </p>
 
-                <a
-                    href="{% url 'exhibitions' %}"
-                    class="inline-block mt-5 text-sm font-medium
-                           hover:underline">
+                <a href="{% url 'exhibition_detail' exhibition.id %}"
+                   class="inline-block mt-5 text-sm font-medium
+                          hover:underline">
                     Explore exhibition →
                 </a>
 
@@ -404,11 +404,10 @@
                     {{ event.location }}
                 </p>
 
-                <a
-                    href="{% url 'events' %}"
-                    class="inline-block mt-5 text-sm font-medium
-                           hover:underline">
-                    View details →
+                <a href="{% url 'event_detail' event.id %}"
+                   class="inline-block mt-5 text-sm font-medium
+                          hover:underline">
+                    View event →
                 </a>
 
             </div>
@@ -454,12 +453,12 @@
 
         </div>
 
-        <button
-            class="shrink-0 px-6 py-3 bg-white text-stone-900
-                   rounded-lg font-medium text-sm
-                   hover:bg-stone-100 transition">
-            Talk to the Assistant →
-        </button>
+        <a href="{% url 'chatbot' %}"
+   class="shrink-0 px-6 py-3 bg-white text-stone-900
+          rounded-lg font-medium text-sm
+          hover:bg-stone-100 transition">
+    Talk to the Assistant →
+</a>
 
     </div>
 

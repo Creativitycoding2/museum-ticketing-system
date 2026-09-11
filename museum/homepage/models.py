@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
+import uuid
 
 
 class Exhibition(models.Model):
@@ -84,3 +86,75 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse("event_detail", args=[self.pk])
 
+
+class Booking(models.Model):
+    STATUS_CHOICES = [
+        ("active", "Active"),
+        ("cancelled", "Cancelled"),
+        ("used", "Used"),
+    ]
+
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="bookings"
+    )
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="bookings"
+    )
+
+    ticket_id = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False
+    )
+
+    number_of_tickets = models.PositiveIntegerField(default=1)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="active"
+    )
+
+    booked_at = models.DateTimeField(auto_now_add=True)
+
+
+class Visit(models.Model):
+    STATUS_CHOICES = [
+        ("active", "Active"),
+        ("cancelled", "Cancelled"),
+        ("used", "Used"),
+    ]
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="visits"
+    )
+    ticket_id = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False
+    )
+    date = models.DateField()
+    time = models.TimeField()
+    number_of_visitors = models.PositiveIntegerField(default=1)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="active"
+    )
+    booked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-booked_at"]
+
+    def __str__(self):
+        return (
+            f"{self.user} - "
+            f"{self.date} - "
+            f"{self.number_of_visitors} visitors"
+        )
